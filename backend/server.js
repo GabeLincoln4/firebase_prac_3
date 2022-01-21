@@ -3,9 +3,9 @@ const app = express();
 const mongoose = require('mongoose');
 const cors = require('cors');
 
-app.use(cors());
+app.use(cors())
 
-const mongoURI = "mongodb+srv://admin-gabriel:<password>@cluster0.n51sy.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+const mongoURI = "mongodb+srv://admin-gabriel:xiqW75HDDMmoRhiK@cluster0.n51sy.mongodb.net/firebasePracThreeDB?retryWrites=true&w=majority";
 
 mongoose.connect(mongoURI);
 
