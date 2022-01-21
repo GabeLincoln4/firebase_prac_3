@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { ref, uploadBytesResumable, getDownloadURL } from "@firebase/storage";
+import { ref, uploadBytesResumable, getDownloadURL, listAll } from "@firebase/storage";
 import {storage} from "./firebase.js";
 
 function App() {
@@ -17,6 +17,8 @@ function App() {
     if (!file) return;
     const storageRef = ref(storage, `/files/${file.name}`);
     const uploadTask = uploadBytesResumable(storageRef, file);
+
+    console.log(file);
 
     uploadTask.on("state_changed", (snapshot) => {
       const prog = Math.round(
@@ -42,6 +44,7 @@ function App() {
       <hr />
 
       <h3>Upload {progress} %</h3>
+      
     </div>
   );
 }
