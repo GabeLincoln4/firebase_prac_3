@@ -7,4 +7,18 @@ router.route("/cards").get((req, res) => {
         .then(foundCards => res.json(foundCards));
 });
 
+router.route("/createcard").post((req, res) => {
+    const title = req.body.title;
+    const image = req.body.image;
+    const description = req.body.description;
+
+    const newCard = new Card({
+        title,
+        image,
+        description
+    });
+
+    newCard.save();
+});
+
 module.exports = router;
