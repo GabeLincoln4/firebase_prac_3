@@ -4,6 +4,7 @@ import {storage} from "./firebase.js";
 import axios from 'axios';
 import Card from "./components/Card.jsx";
 
+
 // function createCard(card){
 //   <Card 
 //     key={card.title} 
@@ -16,7 +17,8 @@ import Card from "./components/Card.jsx";
 
 function App() {
 
-  const [progress, setProgress] = useState(0);
+  const [photo, setPhoto] = useState("");
+  const [progress, setProgress] = useState(null);
   const [cards, setCards] = useState({
     title: '',
     image: '',
@@ -31,43 +33,30 @@ function App() {
   //   }).then(jsonRes => setCards(jsonRes))
   // });
 
-  const formHandler = (e) => {
-    e.preventDefault();
-    const file = e.target.files;
-    uploadFiles(file);
+  
 
-    const newCard = {
-      title: cards.title,
-      image: cards.image,
-      description: cards.description
-    }
+  // const uploadFiles = (file) => {
+  //   //
+  //   if (!file) return;
+  //   const storageRef = ref(storage, `/files/${file.name}`);
+  //   const uploadTask = uploadBytesResumable(storageRef, file);
+
     
-    axios.post("http://localhost:5000/createcard", newCard);
-   
-  };
 
-  const uploadFiles = (file) => {
-    //
-    if (!file) return;
-    const storageRef = ref(storage, `/files/${file.name}`);
-    const uploadTask = uploadBytesResumable(storageRef, file);
+  //   uploadTask.on("state_changed", (snapshot) => {
+  //     const prog = Math.round(
+  //       (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+  //     );
 
-    console.log(file);
-
-    uploadTask.on("state_changed", (snapshot) => {
-      const prog = Math.round(
-        (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-      );
-
-      setProgress(prog);
-      }, 
-      (err) => console.log(err),
-      () => {
-        getDownloadURL(uploadTask.snapshot.ref)
-        .then(url => setCards(url))
-      }
-    ); 
-  };
+  //     setProgress(prog);
+  //     }, 
+  //     (err) => console.log(err),
+  //     () => {
+  //       getDownloadURL(uploadTask.snapshot.ref)
+  //       .then(url => console.log(url))
+  //     }
+  //   ); 
+  // };
 
   function handleChange(e){
     const {name, value} = e.target;
@@ -82,14 +71,65 @@ function App() {
     console.log(value);
   };
 
+  // const formHandler = (e) => {
+    
+  //   const file = e.target[0].files;
+  //   uploadFiles(file);
+
+    // const newCard = {
+    //   title: cards.title,
+    //   image: cards.image,
+    //   description: cards.description
+    // }
+    
+    // axios.post("http://localhost:5000/createcard", newCard);
+    
+  // };
+
+  const handleImageChange = e => {
+    if (e.target.files[0]){
+      setPhoto(e.target.files[0])
+    }
+  };
+
+  const handleUpload = () => {
+    
+    const storageRef = ref(storage, `/images/${photo.name}`);
+    const uploadTask = uploadBytesResumable(storageRef, photo);
+    uploadTask.on(
+      "state_changed",
+      snapshot =>{},
+      error => {
+        console.log(error);
+      },
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref)
+          .then((url) => {
+            console.log(url)
+          });
+        // storage
+        //   .ref("images")
+        //   .child(photo.name)
+        //   .getDownloadURL()
+        //   .then(url => {
+        //     console.log(url)
+        //   });
+      }
+    )
+  };
+
+  
+
+  console.log("image: ", photo);
+
   return (
     <div>
-      <form onSubmit={formHandler}>
-        <input onChange={handleChange} type="text" name="title" value={cards.title} />
-        <input type="file" className="input" name="image" />
-        <input onChange={handleChange} type="text" name="description" value={cards.description} />
-        <button type="submit">Upload</button>
-      </form>
+      
+        {/* <input onChange={handleChange} type="text" name="title" value={cards.title} /> */}
+        <input onChange={handleImageChange} type="file" className="input" name="image" />
+        {/* <input onChange={handleChange} type="text" name="description" value={cards.description} /> */}
+        <button onClick={handleUpload} type="submit">Upload</button>
+      
       <hr />
 
       <h3>Upload {progress} %</h3>
