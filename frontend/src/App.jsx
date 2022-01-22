@@ -22,7 +22,6 @@ function App() {
   const [progress, setProgress] = useState(null);
   const [cards, setCards] = useState({
     title: '',
-    image: '',
     description: ''
   });
 
@@ -68,33 +67,29 @@ function App() {
         [name]: value
       }
     })
-
-    console.log(value);
+    // console.log(urlHook);
+    
   };
 
   // const formHandler = (e) => {
     
-  //   const file = e.target[0].files;
-  //   uploadFiles(file);
+  // //   const file = e.target[0].files;
+  // //   uploadFiles(file);
 
-    // const newCard = {
-    //   title: cards.title,
-    //   image: cards.image,
-    //   description: cards.description
-    // }
     
-    // axios.post("http://localhost:5000/createcard", newCard);
     
   // };
 
-  const handleImageChange = e => {
+  // const handleImageChange = e => {
+   
+  // };
+
+  const handleImageChange = (e) => {
+    
     if (e.target.files[0]){
       setPhoto(e.target.files[0])
     }
-  };
 
-  const handleUpload = () => {
-    
     const storageRef = ref(storage, `/images/${photo.name}`);
     const uploadTask = uploadBytesResumable(storageRef, photo);
     uploadTask.on(
@@ -118,20 +113,31 @@ function App() {
         //   });
       }
     )
+
+    
+
   };
 
   
-
-  console.log("image: ", photo);
+  function handleUpload(){
+    const newCard = {
+      title: cards.title,
+      image: urlHook,
+      description: cards.description
+    }
+    
+    axios.post("http://localhost:5000/createcard", newCard);
+  }
+  
 
   return (
     <div>
-      
-        {/* <input onChange={handleChange} type="text" name="title" value={cards.title} /> */}
+      <form onSubmit={handleUpload}>
+        <input onChange={handleChange} type="text" name="title" value={cards.title} />
         <input onChange={handleImageChange} type="file" className="input" name="image" />
-        {/* <input onChange={handleChange} type="text" name="description" value={cards.description} /> */}
-        <button onClick={handleUpload} type="submit">Upload</button>
-      
+        <input onChange={handleChange} type="text" name="description" value={cards.description} />
+        <button type="submit">Upload</button>
+      </form>
       <hr />
 
       <h3>Upload {progress} %</h3>
