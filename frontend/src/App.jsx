@@ -18,6 +18,7 @@ import Card from "./components/Card.jsx";
 function App() {
 
   const [photo, setPhoto] = useState("");
+  const [urlHook, setUrlHook] = useState("");
   const [progress, setProgress] = useState(null);
   const [cards, setCards] = useState({
     title: '',
@@ -105,7 +106,8 @@ function App() {
       () => {
         getDownloadURL(uploadTask.snapshot.ref)
           .then((url) => {
-            console.log(url)
+            console.log(url);
+            setUrlHook(url);
           });
         // storage
         //   .ref("images")
