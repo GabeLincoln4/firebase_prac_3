@@ -33,31 +33,6 @@ function App() {
   //   }).then(jsonRes => setCards(jsonRes))
   // });
 
-  
-
-  // const uploadFiles = (file) => {
-  //   //
-  //   if (!file) return;
-  //   const storageRef = ref(storage, `/files/${file.name}`);
-  //   const uploadTask = uploadBytesResumable(storageRef, file);
-
-    
-
-  //   uploadTask.on("state_changed", (snapshot) => {
-  //     const prog = Math.round(
-  //       (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-  //     );
-
-  //     setProgress(prog);
-  //     }, 
-  //     (err) => console.log(err),
-  //     () => {
-  //       getDownloadURL(uploadTask.snapshot.ref)
-  //       .then(url => console.log(url))
-  //     }
-  //   ); 
-  // };
-
   function handleChange(e){
     const {name, value} = e.target;
 
@@ -67,22 +42,9 @@ function App() {
         [name]: value
       }
     })
-    // console.log(urlHook);
+   
     
   };
-
-  // const formHandler = (e) => {
-    
-  // //   const file = e.target[0].files;
-  // //   uploadFiles(file);
-
-    
-    
-  // };
-
-  // const handleImageChange = e => {
-   
-  // };
 
   const handleImageChange = (e) => {
     
@@ -104,13 +66,6 @@ function App() {
             console.log(url);
             setUrlHook(url);
           });
-        // storage
-        //   .ref("images")
-        //   .child(photo.name)
-        //   .getDownloadURL()
-        //   .then(url => {
-        //     console.log(url)
-        //   });
       }
     )
 
